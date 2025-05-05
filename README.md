@@ -1,4 +1,4 @@
-# QGAPS WebApp
+# Q-GAPS-WebApp
 
 ## Installation
 
