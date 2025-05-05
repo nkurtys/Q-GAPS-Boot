@@ -40,5 +40,5 @@ http://127.0.0.1:8080
 ```
 
 You should see the Homepage of the Q-GAPS WebApp!
-If any errors or questions occur feel free the write an issue or email me directly at [natalie_kurtys@hotmail.com](emailto:natalie_kurtys@hotmail.com).
+If any errors or questions occur feel free the write an issue or email me directly at [natalie_kurtys@hotmail.com](natalie_kurtys@hotmail.com).
 
