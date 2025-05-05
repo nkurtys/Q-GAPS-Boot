@@ -1,4 +1,4 @@
-# Mastodon QGAPS
+# QGAPS WebApp
 
 ## Installation
 
