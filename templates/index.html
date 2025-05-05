@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - QGAPS WebApp{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    <h1 style="font-size: 3rem;"><b>Welcome to your Dashboard!</b></h1>
+    <p style="font-size:x-large;">Use the Create button if you are interested in adding a new Keyword to your Dashboard.</p>
+
+</div>
+
+<div class="container text-center">
+    <div id="grid" class="row row-cols-auto">
+        <form action="/create" class=" col">
+            <button class="btn btn-primary btn-lg" style="background-color: #2d7e70; border: 0px;">
+                <a id="create" href="/create" style="color: white; text-decoration: none;">Create</a>
+            </button>
+        </form>
+        {% for tablename in listOfTables %}
+            <!-- TODO - temporary fix - find better solution -->
+            <!-- {% if tablename[0][-1] == "L" %} -->
+            <!--{% else %} -->
+                <form action="/tables/{{ tablename[0] }}" class=" col">
+                    <button class="btn btn-secondary btn-lg" style="background-color: #99BDB7; border: 0px;" type="submit" value="{{ tablename[0] }}">{{ tablename[0] }}</button>
+                </form>
+            <!--{% endif %} -->
+        {% endfor %}
+    </div>
+</div>
+
+<!-- JavaScript for navigation bar active button -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const pagelinks = document.getElementsByClassName("nav-item");
+        const thispage = document.getElementById("home");
+        Array.from(pagelinks).forEach(link => link.classList.remove("active"));
+        thispage.classList.add("active");
+    });
+</script>
+
+{% endblock %}
+

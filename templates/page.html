@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+{% extends "base.html" %} 
+
+{% block content %}
+
+
+<div class="container mt-5">
+  <h2 class="text-center">"{{ tablename }}"</h2>
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      {% if posts != False%}
+      <button class="nav-link active" id="nav-mastodon-tab" data-bs-toggle="tab" data-bs-target="#nav-mastodon" type="button" role="tab" aria-controls="nav-mastodon" aria-selected="true">Mastodon</button>
+      {% endif %}
+      {% if postsL != False%}
+      <button class="nav-link" id="nav-LIVIVO-tab" data-bs-toggle="tab" data-bs-target="#nav-LIVIVO" type="button" role="tab" aria-controls="nav-LIVIVO" aria-selected="false">LIVIVO</button>
+      {% endif %}
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    {% if posts != False %}
+    <div class="tab-pane fade show active" id="nav-mastodon" role="tabpanel" aria-labelledby="nav-mastodon-tab" tabindex="0">
+      <table
+        id="{{tablename}}"
+        class="table display table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>Content</th>
+            <th>Timestamp</th>
+            <th>URL</th>
+            <th>Lang</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for post in posts %}
+          <tr>
+            <td>
+              {{ post[5] }}
+            </td>
+            <td>
+              {% if '.' in post[1] %} {{ post[1][:-13] }} {% elif '+00:00' in
+              post[1] %} {{ post[1][:-6] }} {% else %} {{ post[1] }} {% endif %}
+            </td>
+            <td>
+              <a href="{{ post[4] }}" target="{{ post[4] }}">Read on Mastodon</a>
+            </td>
+            <td>{{ post[2] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+    {% if postsL != False%}
+    <div class="tab-pane fade" id="nav-LIVIVO" role="tabpanel" aria-labelledby="nav-LIVIVO-tab" tabindex="0">
+      <table
+        id="{{tablename}}-livivo"
+        class="table display table-bordered">
+        
+        <thead class="table-dark">
+          <tr>
+            <th>Title</th>
+            <th>Journal</th>
+            <th>Year</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for postL in postsL %}
+          <tr>
+            <td>
+              <a
+                href="https://www.livivo.de/doc/{{ postL[3] }}"
+                target="https://www.livivo.de/doc/{{ postL[3] }}"
+                >{{ postL[0] }}</a
+              >
+            </td>
+            <td>{{ postL[1] }}</td>
+            <td>{{ postL[2] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+  </div>
+
+    <div class="footer text-center mt-4">
+      <p>
+        Because of rate limiting on both Mastodon and LIVIVO, we can only show
+        you a maximum of 60 entries.
+      </p>
+    </div>
+  
+</div>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/2.0.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/datetime/1.5.2/js/dataTables.dateTime.min.js"></script>
+
+<!-- Mark.js JS -->
+<script src="https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js)"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.js"></script>
+
+<!-- Initialize DataTables -->
+<script>
+  $(document).ready(function () {
+    $("#{{tablename}}").DataTable({
+      mark: true,
+      order: [[1, "desc"]],
+      layout: {
+        topStart: "pageLength",
+        topEnd: "search",
+        bottomStart: "info",
+        bottomEnd: "paging",
+      },
+    });
+
+    $("#{{tablename}}-livivo").DataTable({
+      mark: true,
+      order: [[2, "desc"]],
+      layout: {
+        topStart: "info",
+        bottom: "paging",
+        bottomStart: null,
+        bottomEnd: null,
+      },
+    });
+  });
+</script>
+
+{% endblock %}

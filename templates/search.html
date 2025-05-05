@@ -1,0 +1,126 @@
+<!doctype html>
+
+{% extends "base.html" %}
+
+{% block content %}
+
+  <div class="container my-4">
+    <h1 class="text-center">Search Mastodon</h1>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const pagelinks = document.querySelectorAll(".nav-item");
+        const thispage = document.getElementById("search");
+        pagelinks.forEach(link => link.classList.remove("active"));
+        thispage.classList.add("active");
+      });
+    </script>
+
+    <!-- Search Form -->
+    <form action="/search" method="get">
+      <div class="row p-3 justify-content-center">
+        <div class="col-md-4">
+          <label for="instance" class="form-label">Mastodon Instance:</label>
+          <input type="text" id="instance" class="form-control" placeholder="Enter Instance" value="mastodon.social" name="instance">
+        </div>
+        <div class="col-md-4">
+          <label for="query" class="form-label">Query:</label>
+          <input type="text" id="query" class="form-control" name="query" placeholder="Enter Keyword">
+        </div>
+      </div>
+      <div class="row p-3 justify-content-center">
+        <div class="col-md-4 offset-md-1">
+          <label for="start_date" class="form-label">From:</label>
+          <input type="date" id="start_date" class="form-control" name="start_date">
+        </div>
+        <div class="col-md-4">
+          <label for="end_date" class="form-label">To:</label>
+          <input type="date" id="end_date" class="form-control" name="end_date">
+        </div>
+        <div class="col-md-1 align-self-end">
+          <button type="submit" class="btn btn-secondary">Search</button>
+        </div>
+      </div>
+        
+      
+      
+    </form>
+
+    <hr>
+
+    <h1 class="text-center">Save to Dashboard</h1>
+    
+    <!-- Save Form -->
+    <form action="/search" method="get">
+      <div class="row p-3 justify-content-center">
+        <div class="col-md-4 ">
+          <input type="text" name="tablename" class="form-control" placeholder="Enter Keyword">
+        </div>
+        <div class="col-md-4 btn-group" role="group" aria-label="Basic checkbox toggle button group">
+          <input type="checkbox" class="btn-check" name="btncheckM" id="btncheckM" autocomplete="off">
+          <label class="btn btn-outline-secondary" for="btncheck<">Mastodon</label>
+        
+          <input type="checkbox" class="btn-check" name="btncheckL" id="btncheckL" autocomplete="off">
+          <label class="btn btn-outline-secondary" for="btncheckL">LIVIVO</label>
+        </div>
+        <div class="col-md-2">
+          <button id="save" type="submit" class="btn btn-secondary">Save to Dashboard</button>
+        </div>
+      </div>
+
+    </form>
+
+    <script>
+      const buttonSave = document.getElementById("save");
+      buttonSave.addEventListener("click", function () {
+        if (buttonSave.innerText === "Save to Dashboard") {
+          buttonSave.innerText = "Saving... Don't cancel.";
+        } else {
+          buttonSave.innerText = "Save to Dashboard";
+        }
+      });
+    </script>
+
+    <!-- Posts Table -->
+    {% if posts != False %}
+      <table id="basetable" class="table table-striped table-hover mt-4">
+        <thead class="table-dark">
+          <tr>
+            <th>Content</th>
+            <th>Timestamp</th>
+            <th>URL</th>
+            <th>Language</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for post in posts %}
+            <tr>
+              <td class="contentcell">{{ post["content"] }}</td>
+              <td>{{ post["created_at"] }}</td>
+              <td><a href="{{ post['uri'] }}" target="_blank">{{ post["uri"] }}</a></td>
+              <td>{{ post["language"] }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+
+  <!-- JavaScript Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+  <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
+  <script src="https://cdn.datatables.net/datetime/1.5.2/js/dataTables.dateTime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js)"></script>
+  <script src="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      new DataTable('#basetable', {
+        mark: true,
+        order: [[1, 'desc']]
+      });
+    });
+  </script>
+
+{% endblock %}
